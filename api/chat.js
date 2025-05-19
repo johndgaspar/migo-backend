@@ -44,3 +44,12 @@ MIGO:
     const reply = completion.choices[0]?.message?.content?.trim();
 
     if (!reply) {
+      return res.status(500).json({ error: 'No reply from OpenAI' });
+    }
+
+    res.status(200).json({ reply });
+  } catch (error) {
+    console.error('OpenAI API error:', error);
+    res.status(500).json({ error: 'Something went wrong with OpenAI.' });
+  }
+}
