@@ -5,6 +5,17 @@ const openai = new OpenAI({
 });
 
 export default async function handler(req, res) {
+  // 🔧 CORS headers
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  // Respond to CORS preflight
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
+  // Handle only POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -25,14 +36,14 @@ Journal:
 ${input}
 
 Weekly Insight:
-`;
+`.trim();
   } else {
     prompt = `
 You are MIGO — a supportive AI therapist trained in CBT and ACT. Reflect warmly and insightfully to help the user process this message:
 
 User: ${input}
 MIGO:
-`;
+`.trim();
   }
 
   try {
@@ -53,3 +64,4 @@ MIGO:
     res.status(500).json({ error: 'Something went wrong with OpenAI.' });
   }
 }
+
