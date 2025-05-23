@@ -19,6 +19,13 @@ export default async function handler(req, res) {
 
   const { input, mood, mode = 'chat', selectedMigo = 'amigo-migo', isFirstMessage = false } = req.body;
 
+  console.log('📩 Incoming request:', {
+  input,
+  selectedMigo,
+  isFirstMessage,
+  mode
+});
+
   if (!input || typeof input !== 'string') {
     return res.status(400).json({ error: 'Invalid input' });
   }
